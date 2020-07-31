@@ -8,6 +8,7 @@ import VScrollLock from 'v-scroll-lock'
 import InfiniteScroll from 'vue-infinite-scroll'
 import Ripple from 'vue-ripple-directive'
 import vBlur from 'v-blur'
+import Vuelidate from 'vuelidate'
 import 'vue-multiselect/dist/vue-multiselect.min.css'
 
 import App from './App.vue'
@@ -25,6 +26,7 @@ Vue.use(VScrollLock, {
 })
 Vue.use(InfiniteScroll)
 Vue.use(vBlur)
+Vue.use(Vuelidate)
 
 Vue.directive('ripple', Ripple);
 

@@ -91,6 +91,24 @@
     </div>
 
     <br><br>
+
+    <div>
+      <div class="form-group" :class="{ 'form-group--error': $v.name.$error }">
+          <label class="form__label">Name</label>
+          <input class="form__input" v-model.trim="$v.name.$model"/>
+      </div>
+      <div class="error" v-if="!$v.name.required">Field is required</div>
+      <div class="error" v-if="!$v.name.minLength">Name must have at least {{$v.name.$params.minLength.min}} letters.</div>
+      <br>
+      <div class="form-group" :class="{ 'form-group--error': $v.age.$error }">
+          <label class="form__label">Age</label>
+          <input class="form__input" v-model.trim.lazy="$v.age.$model"/>
+      </div>
+      <div class="error" v-if="!$v.age.between">Must be between {{$v.age.$params.between.min}} and {{$v.age.$params.between.max}}</div>
+      <span tabindex="0">Blur to see changes</span>
+    </div>
+
+    <br><br>
     <div style="height:2000px;"></div>
     <h1 id="element">Hi. I'm element</h1>
     <div style="height:2000px;"></div>
@@ -101,6 +119,7 @@
 
 <script>
 import { focus } from 'vue-focus';
+import { required, minLength, between } from 'vuelidate/lib/validators';
 import Multiselect from 'vue-multiselect';
 
 let count = 0;
@@ -113,6 +132,9 @@ export default {
   directives: { focus: focus },
   data () {
     return {
+      name: '',
+      age: 0,
+
       svalue: '',
       soptions: ['Select option', 'options', 'selected', 'mulitple', 'label', 'searchable', 'clearOnSelect', 'hideSelected', 'maxHeight', 'allowEmpty', 'showLabels', 'onChange', 'touched'],
 
@@ -160,6 +182,15 @@ export default {
         transition: 'all .5s linear'
       }
 
+    }
+  },
+  validations: {
+    name: {
+        required,
+        minLength: minLength(4)
+    },
+    age: {
+        between: between(20, 30)
     }
   },
   mounted: function() {
