@@ -64,6 +64,33 @@
     </div>
     <br><br>
 
+    <div style="width:400px">
+      <label class="typo__label">Single select</label>
+      <multiselect v-model="svalue" :options="soptions" :searchable="false" :close-on-select="true" :show-labels="false" placeholder="Pick a value"></multiselect>
+      <pre class="language-json"><code>{{ svalue  }}</code></pre>
+    </div>
+
+    <div style="width:500px; margin-top:30px;">
+      <label class="typo__label">Custom option template</label>
+      <multiselect v-model="cvalue" placeholder="Fav No Man’s Sky path" label="title" track-by="title" :options="coptions" :option-height="104" :custom-label="customLabel" :show-labels="false">
+        <template slot="singleLabel" slot-scope="props">
+          <img class="option__image" :src="props.option.img" alt="No Man’s Sky">
+          <span class="option__desc">
+            <span class="option__title">{{ props.option.title }}</span>
+          </span>
+        </template>
+        <template slot="option" slot-scope="props">
+          <img class="option__image" :src="props.option.img" alt="No Man’s Sky">
+          <div class="option__desc">
+            <span class="option__title">{{ props.option.title }}</span>
+            <span class="option__small">{{ props.option.desc }}</span>
+          </div>
+        </template>
+      </multiselect>
+      <pre style="text-align:left;"><code>{{ cvalue  }}</code></pre>
+    </div>
+
+    <br><br>
     <div style="height:2000px;"></div>
     <h1 id="element">Hi. I'm element</h1>
     <div style="height:2000px;"></div>
@@ -74,16 +101,29 @@
 
 <script>
 import { focus } from 'vue-focus';
+import Multiselect from 'vue-multiselect';
 
 let count = 0;
 
 export default {
   name: 'App',
   components: {
+    Multiselect
   },
   directives: { focus: focus },
   data () {
     return {
+      svalue: '',
+      soptions: ['Select option', 'options', 'selected', 'mulitple', 'label', 'searchable', 'clearOnSelect', 'hideSelected', 'maxHeight', 'allowEmpty', 'showLabels', 'onChange', 'touched'],
+
+      cvalue: { title: 'Explorer', desc: 'Discovering new species!', img: '/images/creatures.png' },
+      coptions: [
+        { title: 'Space Pirate', desc: 'More space battles!', img: '/images/fleet.png' },
+        { title: 'Merchant', desc: 'PROFIT!', img: '/images/trading_post.png' },
+        { title: 'Explorer', desc: 'Discovering new species!', img: '/images/creatures.png' },
+        { title: 'Miner', desc: 'We need to go deeper!', img: '/images/resource_lab.png' }
+      ],
+
       isShow: true,
       tooltipMsg: 'This is a button.',
       open: false,
@@ -126,6 +166,10 @@ export default {
     this.loadMore();
   },
   methods: {
+    customLabel ({ title, desc }) {
+      return `${title} – ${desc}`
+    },
+
     moveDown: function() {
       this.focused = Math.min(this.focused + 1, this.items.length - 1);
     },
@@ -204,6 +248,29 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.option__image {
+  max-height: 80px;
+  margin-right: 10px
+}
+
+.option__desc, .option__image {
+  display: inline-block;
+  vertical-align: middle
+}
+
+.option__desc {
+  padding: rem(10px)
+}
+
+.option__title {
+  font-size: rem(24px)
+}
+
+.option__small {
+  margin-top: rem(10px);
+  display: block
 }
 
 .tooltip {
