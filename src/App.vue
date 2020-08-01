@@ -21,8 +21,8 @@
       Dynamic Copy to clipboard
     </button>
 
-    <button v-tooltip="'You have new messages.'">Hover me</button>
-    <!--button v-tooltip.top-center="tooltipMsg">Hover me</button-->
+    <!--button v-tooltip="'You have new messages.'">Hover me</button-->
+    <button v-tooltip.top-center="tooltipMsg">Hover me</button>
 
     <button @click="closeModal">X</button>
     <button @click="openModal">O</button>
@@ -109,6 +109,11 @@
     </div>
 
     <br><br>
+
+    <draggable v-model="myArray" group="people" @start="drag=true" @end="drag=false">
+      <div v-for="element in myArray" :key="element.id">{{element.name}}</div>
+    </draggable>
+
     <div style="height:2000px;"></div>
     <h1 id="element">Hi. I'm element</h1>
     <div style="height:2000px;"></div>
@@ -121,17 +126,22 @@
 import { focus } from 'vue-focus';
 import { required, minLength, between } from 'vuelidate/lib/validators';
 import Multiselect from 'vue-multiselect';
+import draggable from 'vuedraggable';
 
 let count = 0;
 
 export default {
   name: 'App',
   components: {
-    Multiselect
+    Multiselect,
+    draggable
   },
   directives: { focus: focus },
   data () {
     return {
+      drag: false,
+      myArray: [{id: 11, name: 'item1'}, {id: 12, name: 'item2'}, {id: 13, name: 'item3'}, {id: 14, name: 'item4'}],
+
       name: '',
       age: 0,
 
